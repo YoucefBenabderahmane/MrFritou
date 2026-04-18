@@ -57,6 +57,7 @@ function MenuContent() {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
 
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const [reviewingProduct, setReviewingProduct] = useState<MenuItem | null>(null);
   const [productReviews, setProductReviews] = useState<any[]>([]);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -408,12 +409,30 @@ function MenuContent() {
               </span>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <button 
-                onClick={() => setLanguage(language === "en" ? "fr" : language === "fr" ? "ar" : "en")}
-                className="h-9 px-3 rounded-full bg-secondary/80 flex items-center justify-center font-bold text-xs hover:bg-secondary transition-colors border border-border/50 shadow-sm whitespace-nowrap"
-              >
-                {language === "en" ? t("customer.langNameFr", language) : language === "fr" ? t("customer.langNameAr", language) : t("customer.langName", language)}
-              </button>
+              <div className="relative z-50">
+                <button 
+                  onClick={() => setIsLangOpen(!isLangOpen)}
+                  className="h-9 px-3 rounded-full bg-secondary/80 flex items-center justify-center font-bold text-sm hover:bg-secondary transition-colors border border-border/50 shadow-sm whitespace-nowrap gap-1.5"
+                >
+                  {language === "en" ? "English" : language === "fr" ? "Français" : "العربية"}
+                  <div className={`text-[9px] transition-transform ${isLangOpen ? "rotate-180" : ""}`}>▼</div>
+                </button>
+                <AnimatePresence>
+                  {isLangOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsLangOpen(false)} />
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                        className={`absolute top-11 ${isRTL(language) ? "left-0" : "right-0"} w-32 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50 flex flex-col`}
+                      >
+                        <button onClick={() => { setLanguage("en"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "en" ? "text-primary bg-primary/5" : "text-foreground"}`}>English</button>
+                        <button onClick={() => { setLanguage("fr"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "fr" ? "text-primary bg-primary/5" : "text-foreground"}`}>Français</button>
+                        <button onClick={() => { setLanguage("ar"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "ar" ? "text-primary bg-primary/5" : "text-foreground"}`}>العربية</button>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
               <button 
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-2 glass rounded-full hover:bg-secondary transition-all shadow-sm"

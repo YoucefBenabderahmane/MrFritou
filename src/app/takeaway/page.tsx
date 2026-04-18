@@ -1,14 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Utensils, QrCode, ChefHat } from "lucide-react";
 import Link from "next/link";
 import { useOrderStore } from "@/lib/store";
 import { t, isRTL, type Language } from "@/lib/i18n";
-import { useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 
 export default function Home() {
   const { language, setLanguage, setCurrency, restaurantName, setRestaurantName, restaurantLogo, setRestaurantLogo, restaurantAddress, setRestaurantAddress, setTheme } = useOrderStore();
+  const [isLangOpen, setIsLangOpen] = useState(false);
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -63,12 +64,31 @@ export default function Home() {
       dir={isRTL(language) ? "rtl" : "ltr"}
     >
       <div className={isRTL(language) ? "absolute top-4 left-4 sm:top-6 sm:left-6 z-50" : "absolute top-4 right-4 sm:top-6 sm:right-6 z-50"}>
-        <button 
-          onClick={() => setLanguage(language === "en" ? "fr" : language === "fr" ? "ar" : "en")}
-          className="h-10 px-4 rounded-full glass flex items-center justify-center font-bold text-sm hover:bg-secondary/50 transition-colors shadow-lg border border-border/50 text-foreground bg-background/50 backdrop-blur-md whitespace-nowrap"
-        >
-          {language === "en" ? t("customer.langNameFr", language) : language === "fr" ? t("customer.langNameAr", language) : t("customer.langName", language)}
-        </button>
+        <div className="relative">
+          <button 
+            onClick={() => setIsLangOpen(!isLangOpen)}
+            className="h-10 px-4 rounded-full glass flex items-center justify-center font-bold text-sm hover:bg-secondary/50 transition-colors shadow-lg border border-border/50 text-foreground bg-background/50 backdrop-blur-md whitespace-nowrap gap-1.5"
+          >
+            {language === "en" ? "English" : language === "fr" ? "Français" : "العربية"}
+            <div className={`text-[10px] transition-transform ${isLangOpen ? "rotate-180" : ""}`}>▼</div>
+          </button>
+          
+          <AnimatePresence>
+            {isLangOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setIsLangOpen(false)} />
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                  className={`absolute top-12 ${isRTL(language) ? "left-0" : "right-0"} w-32 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50 flex flex-col`}
+                >
+                  <button onClick={() => { setLanguage("en"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "en" ? "text-primary bg-primary/5" : "text-foreground"}`}>English</button>
+                  <button onClick={() => { setLanguage("fr"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "fr" ? "text-primary bg-primary/5" : "text-foreground"}`}>Français</button>
+                  <button onClick={() => { setLanguage("ar"); setIsLangOpen(false); }} className={`px-4 py-2 text-sm font-medium ${isRTL(language) ? "text-right" : "text-left"} transition-colors hover:bg-secondary/50 ${language === "ar" ? "text-primary bg-primary/5" : "text-foreground"}`}>العربية</button>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">

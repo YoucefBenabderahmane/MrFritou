@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNum      String
+  table         String
+  status        String
+  time          DateTime    @default(now())
+  type          String      // "dine-in" or "takeaway"
+  customerName  String?
+  customerPhone String?
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id       String  @id @default(cuid())
+  name     String
+  quantity Int
+  price    Float
+  note     String?
+  orderId  String
+  order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model RestaurantSettings {
+  id           String @id @default(cuid())
+  name         String
+  currency     String
+  address      String
+  logo             String?
+  tablesCount      Int    @default(15)
+  language     String @default("en") // "en", "fr", "ar"
+  theme        String @default("orange")
+}
+
+model Printer {
+  id        String  @id @default(cuid())
+  name      String  // e.g. "Main Kitchen", "Bar Station", "Cashier 1"
+  type      String  // "kitchen" or "payment"
+  ip        String? // Network IP (optional)
+  usbLabel  String? // USB device name after detection (optional)
+  isDefault Boolean @default(false)
+}
+
+model StockItem {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  quantity    Float    @default(0)
+  unit        String
+  unitCost    Float
+  lastUpdated DateTime @default(now())
+}
+
+model FinTransaction {
+  id          String   @id @default(cuid())
+  type        String   // "income" or "expense"
+  amount      Float
+  description String
+  category    String?
+  date        DateTime @default(now())
+}
+
+model Worker {
+  id          String          @id @default(cuid())
+  name        String
+  role        String
+  phone       String
+  email       String?
+  salary      Float
+  paymentType String          // "Daily", "Weekly", "Monthly"
+  status      String          @default("Active") // "Active" or "Inactive"
+  payments    WorkerPayment[]
+}
+
+model WorkerPayment {
+  id          String   @id @default(cuid())
+  amount      Float
+  paymentType String   // "Daily", "Weekly", "Monthly"
+  note        String?
+  date        DateTime @default(now())
+  workerId    String
+  worker      Worker   @relation(fields: [workerId], references: [id], onDelete: Cascade)
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  category    String
+  stock       Int      @default(0)
+  image       String?
+  status      String   @default("active") // "active" or "low"
+  description String?
+  rating      Float?   @default(0)
+  createdAt   DateTime @default(now())
+  reviews     Review[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String?  @unique
+  password     String?  // null for Google-only users
+  googleId     String?  @unique
+  authProvider String   @default("local") // "local" | "google"
+  role         String   @default("manager") // "admin" | "manager" | "waiter"
+  avatar       String?  // base64 profile picture
+  createdAt    DateTime @default(now())
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  rating     Float
+  comment    String?
+  authorName String?
+  adminReply String?
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+

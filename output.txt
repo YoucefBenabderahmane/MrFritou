@@ -1,0 +1,20 @@
+﻿
+C:\Users\Youcef\.gemini\antigravity\scratch\restaurant-app\src\app\admin\dashboard\menu\page.tsx
+  66:53  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\Youcef\.gemini\antigravity\scratch\restaurant-app\src\app\admin\dashboard\menu\page.tsx:66:53
+  64 |
+  65 |   const handleDuplicate = (product: Product) => {
+> 66 |     const newProduct = { ...product, id: Math.floor(Math.random() * 1000000), name: `${product.name} (Copy)` };
+     |                                                     ^^^^^^^^^^^^^ Cannot call impure function
+  67 |     setProducts([...products, newProduct]);
+  68 |     setOpenDropdownId(null);
+  69 |   };  react-hooks/purity
+
+C:\Users\Youcef\.gemini\antigravity\scratch\restaurant-app\src\app\admin\dashboard\orders\page.tsx
+  16:6  warning  'Order' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 2 problems (1 error, 1 warning)
+

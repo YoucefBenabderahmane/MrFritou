@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Dose Restaurant OS — Full Application Documentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #f97316;
+    --primary-light: #fff7ed;
+    --dark: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --accent: #0ea5e9;
+    --green: #10b981;
+    --purple: #8b5cf6;
+    --red: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 40px 32px; }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+    color: white;
+    padding: 80px 60px;
+    border-radius: 24px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(249,115,22,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(249,115,22,0.2);
+    border: 1px solid rgba(249,115,22,0.4);
+    color: #fb923c;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover h1 span { color: var(--primary); }
+  .cover .subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 40px;
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .cover-meta-item .label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; }
+  .cover-meta-item .value { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-number {
+    width: 36px; height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 22px; font-weight: 800; color: var(--dark); }
+  .section-desc { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .feature-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .feature-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── Tag ── */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin: 2px;
+  }
+  .tag-orange { background: #fff7ed; color: var(--primary); border: 1px solid #fed7aa; }
+  .tag-blue { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .tag-green { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .tag-purple { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .tag-slate { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+  thead tr { background: #f1f5f9; }
+  th { padding: 10px 14px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--dark); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+
+  /* ── Route list ── */
+  .route-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .route-item:last-child { border-bottom: none; }
+  .route-method {
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 5px;
+    min-width: 50px;
+    text-align: center;
+  }
+  .method-get { background: #dcfce7; color: #16a34a; }
+  .method-post { background: #dbeafe; color: #2563eb; }
+  .method-patch { background: #fef9c3; color: #ca8a04; }
+  .method-delete { background: #fee2e2; color: #dc2626; }
+  .route-path { font-family: monospace; font-size: 12px; color: var(--dark); font-weight: 600; }
+  .route-desc { color: var(--muted); flex: 1; }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .flow-step {
+    background: var(--primary-light);
+    border: 1px solid #fed7aa;
+    color: var(--primary);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .flow-arrow { color: var(--muted); font-size: 16px; font-weight: 700; }
+
+  /* ── Highlight box ── */
+  .highlight {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 1px solid #fed7aa;
+    border-left: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .highlight-blue {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .highlight strong { font-weight: 700; }
+
+  /* ── Schema ── */
+  .schema-block {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .schema-key { color: #7dd3fc; }
+  .schema-type { color: #86efac; }
+  .schema-comment { color: #64748b; }
+  .schema-directive { color: #f9a8d4; }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; font-size: 12px; }
+    .page { padding: 0; max-width: 100%; }
+    .cover { border-radius: 0; margin-bottom: 32px; page-break-after: always; }
+    .section { page-break-inside: avoid; }
+    .card { box-shadow: none; }
+    @page { margin: 20mm 15mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════════════════════ COVER ══════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-badge">📄 Technical Documentation</div>
+    <h1><span>Daily Dose</span> Restaurant OS</h1>
+    <p class="subtitle">Full-stack restaurant management platform — MVP Technical Overview</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <span class="label">Version</span>
+        <span class="value">MVP v1.0</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="label">Stack</span>
+        <span class="value">Next.js 16 · Prisma · PostgreSQL</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="label">Domain</span>
+        <span class="value">Daily Dose.youcefben.com</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="label">Author</span>
+        <span class="value">Youcef Benabderahmane</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="label">Date</span>
+        <span class="value">April 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 1. OVERVIEW ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">Application Overview</div>
+        <div class="section-desc">What the app is, who uses it, and its core purpose</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🍽️ What is Daily Dose Restaurant OS?</h3>
+      <p>Daily Dose Restaurant OS is a <strong>complete digital restaurant management platform</strong> built as a web application. It serves two main audiences simultaneously: <strong>restaurant staff and administrators</strong> (who manage orders, menu, finances, and staff) and <strong>customers</strong> (who browse menus and place takeaway orders from their phones). The system operates in real time, with the admin dashboard auto-refreshing order data every 3 seconds.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>👨‍💼 Admin / Staff Interface</h3>
+        <p>A protected dashboard accessible only after login. Manages the full restaurant lifecycle: incoming orders, menu configuration, inventory, staff payroll, and financial reporting. Supports roles: <strong>Admin</strong> (full access) and <strong>Manager/Waiter</strong> (limited access).</p>
+      </div>
+      <div class="card">
+        <h3>📱 Customer-Facing Interface</h3>
+        <p>A public, mobile-optimized interface accessible via QR code scan or direct URL. Customers browse the live menu, add items to cart with notes, enter their details, and submit takeaway orders — no login required.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>Single Restaurant MVP:</strong> The current version is designed for one restaurant at a time. All data (orders, menu, settings, staff) belongs to one shared database. This MVP is the foundation for the upcoming multi-tenant SaaS transformation.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 2. TECH STACK ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div>
+        <div class="section-title">Technology Stack</div>
+        <div class="section-desc">Every library, framework, and tool used to build this application</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Framework</strong></td><td>Next.js (App Router)</td><td>16.1.6</td><td>Full-stack React framework — handles routing, SSR, and API routes</td></tr>
+        <tr><td><strong>Language</strong></td><td>TypeScript</td><td>^5</td><td>Type safety across all frontend and backend code</td></tr>
+        <tr><td><strong>UI Library</strong></td><td>React</td><td>19.2.3</td><td>Component-based UI rendering</td></tr>
+        <tr><td><strong>Styling</strong></td><td>TailwindCSS</td><td>^4</td><td>Utility-first CSS framework for all visual design</td></tr>
+        <tr><td><strong>Animations</strong></td><td>Framer Motion</td><td>^12</td><td>Page transitions, modal animations, micro-interactions</td></tr>
+        <tr><td><strong>Database ORM</strong></td><td>Prisma</td><td>^5.22</td><td>Type-safe database access, schema management, migrations</td></tr>
+        <tr><td><strong>Database</strong></td><td>PostgreSQL (Neon)</td><td>16</td><td>Persistent relational database, hosted on Neon.tech free tier</td></tr>
+        <tr><td><strong>Auth</strong></td><td>JSON Web Tokens (jsonwebtoken)</td><td>^9.0.2</td><td>Session management via httpOnly JWT cookies</td></tr>
+        <tr><td><strong>State Management</strong></td><td>Zustand</td><td>^5.0</td><td>Global client-side state: currency, language, theme, user session</td></tr>
+        <tr><td><strong>Charts</strong></td><td>Recharts</td><td>^3.8</td><td>Area charts for revenue vs. expenses in financial reports</td></tr>
+        <tr><td><strong>PDF Export</strong></td><td>jsPDF + jspdf-autotable</td><td>^4.2 / ^5.0</td><td>Client-side PDF generation for financial reports</td></tr>
+        <tr><td><strong>Icons</strong></td><td>Lucide React</td><td>^0.577</td><td>Consistent icon set used throughout the interface</td></tr>
+        <tr><td><strong>QR Codes</strong></td><td>qrcode.react</td><td>^4.2</td><td>Generate QR codes for each table linking to the menu</td></tr>
+        <tr><td><strong>Date Utilities</strong></td><td>date-fns</td><td>^4.1</td><td>Date formatting for order numbers and financial periods</td></tr>
+        <tr><td><strong>CSS Utilities</strong></td><td>clsx + tailwind-merge</td><td>latest</td><td>Conditional class merging for dynamic component styling</td></tr>
+        <tr><td><strong>Linting</strong></td><td>ESLint + eslint-config-next</td><td>^9</td><td>Code quality enforcement</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 3. DATABASE SCHEMA ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div>
+        <div class="section-title">Database Schema (Prisma)</div>
+        <div class="section-desc">All 8 models stored in Neon PostgreSQL</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>📦 Order</h3>
+        <p><strong>id</strong>, orderNum (DD-MM-YYYY-XXXX), table, status (pending/preparing/ready/completed/cancelled), time, type (dine-in/takeaway), customerName?, customerPhone?, items[]</p>
+      </div>
+      <div class="card">
+        <h3>🍴 OrderItem</h3>
+        <p><strong>id</strong>, name, quantity, price, note?, orderId (FK → Order with CASCADE delete)</p>
+      </div>
+      <div class="card">
+        <h3>🍕 MenuItem</h3>
+        <p><strong>id</strong>, name, price, category, stock (int), image (base64/URL)?, status (active/low), createdAt</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ RestaurantSettings</h3>
+        <p><strong>id</strong>, name, currency, address, logo?, tablesCount (default 15), language (en/fr/ar), theme (8 options)</p>
+      </div>
+      <div class="card">
+        <h3>👷 Worker</h3>
+        <p><strong>id</strong>, name, role, phone, email?, salary, paymentType (Daily/Weekly/Monthly), status (Active/Inactive), payments[]</p>
+      </div>
+      <div class="card">
+        <h3>💸 WorkerPayment</h3>
+        <p><strong>id</strong>, amount, paymentType, note?, date, workerId (FK → Worker)</p>
+      </div>
+      <div class="card">
+        <h3>📊 FinTransaction</h3>
+        <p><strong>id</strong>, type (income/expense), amount, description, category?, date</p>
+      </div>
+      <div class="card">
+        <h3>🖨️ Printer</h3>
+        <p><strong>id</strong>, name, type (kitchen/payment), ip?, usbLabel?, isDefault</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👤 User (Authentication)</h3>
+      <p><strong>id</strong>, username (unique), email?, password (bcrypt hash, nullable for Google users), googleId?, authProvider (local/google), role (admin/manager/waiter), avatar (base64)?, createdAt</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 4. APP FEATURES ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div>
+        <div class="section-title">Full Feature List</div>
+        <div class="section-desc">All modules and capabilities of the application</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;">
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff7ed;">📊</div>
+        <div>
+          <h4>Live Dashboard</h4>
+          <p>Real-time KPIs: monthly revenue, order count, expenses, pure profit. Recent orders table. Financial health widget. Role-based view (Admin sees financials, Managers see orders only).</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#f0fdf4;">🛒</div>
+        <div>
+          <h4>Order Management</h4>
+          <p>Live-polling order list (every 3s). Filter by status. Click-to-open slide panel. Update order status, adjust item quantities, remove/add items. Manual new order creation. Kitchen + payment print tickets.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#eff6ff;">🍽️</div>
+        <div>
+          <h4>Menu Management</h4>
+          <p>CRUD for menu items with category, price, stock levels, and image upload. Items marked active/low. Dishes auto-hide from customer menu when stock = 0.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#faf5ff;">📦</div>
+        <div>
+          <h4>Stock Management</h4>
+          <p>Track raw ingredients and supplies. Define name, category, quantity, unit, and unit cost. Real-time cost tracking per item. Full CRUD with quantity adjustments.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff1f2;">👷</div>
+        <div>
+          <h4>Staff / HR Module</h4>
+          <p>Add employees with role, salary, and payment frequency (Daily/Weekly/Monthly). Log individual payments. Activate/deactivate workers. Full payment history per worker.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#ecfdf5;">📈</div>
+        <div>
+          <h4>Financial Reports</h4>
+          <p>Revenue vs. Expenses area chart. Breakdowns by Day/Week/Month/Year. Revenue sources split (orders vs. other income). Worker payroll history. PDF export with full tables. Profit margin calculation.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#f0fdf4;">💳</div>
+        <div>
+          <h4>Transaction Ledger</h4>
+          <p>Manual income and expense logging. Categories for each transaction. Feeds into financial reports calculations for "other income" and "expenses" totals.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff7ed;">🔐</div>
+        <div>
+          <h4>Authentication</h4>
+          <p>Username/password login with JWT (httpOnly cookie). Google OAuth social login. User registration. Password hashing. Role-based access control (admin/manager/waiter). Profile editing with avatar upload.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#f8fafc;">🖨️</div>
+        <div>
+          <h4>Thermal Printer Support</h4>
+          <p>Register printers (kitchen or payment type). Connect via USB (WebUSB API) or network IP. Set default printer per type. Print kitchen tickets (items + notes) and payment receipts (logo, totals) directly from browser.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#eff6ff;">📱</div>
+        <div>
+          <h4>Customer Takeaway App</h4>
+          <p>Public landing page with restaurant branding. Category-filtered menu grid with images. Cart with item notes. Customer name + phone required for takeaway. Order confirmation modal. Fully mobile-responsive.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#faf5ff;">🔢</div>
+        <div>
+          <h4>QR Code Generator</h4>
+          <p>Auto-generates one QR code per table (e.g. Table 1 → /menu?table=Table+1). Download individual or all QR codes. Print-ready layout. Driven by tablesCount setting.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#fff7ed;">⚙️</div>
+        <div>
+          <h4>Settings & Customization</h4>
+          <p>Restaurant name, address, logo upload. 40+ currency options. 3 interface languages (English, French, Arabic with RTL). 8 color themes (Ember, Sapphire, Forest, Ruby, Cosmic, Rose Gold, Midnight, Parchment). Table count management.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 5. ROUTING ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div>
+        <div class="section-title">Application Routes</div>
+        <div class="section-desc">Page routes and API endpoints</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:14px;">📄 Page Routes (Next.js App Router)</h3>
+      <div class="route-item"><span class="route-path">/</span><span class="route-desc">Portal landing — shows restaurant logo and Login button</span></div>
+      <div class="route-item"><span class="route-path">/admin/login</span><span class="route-desc">Admin login page (credentials or Google OAuth)</span></div>
+      <div class="route-item"><span class="route-path">/admin/register</span><span class="route-desc">New user registration page</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard</span><span class="route-desc">Main dashboard — KPI cards + recent orders table</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/orders</span><span class="route-desc">Order management — live-polling table + order panel + print</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/menu</span><span class="route-desc">Menu item management — add/edit/delete/image upload</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/stock</span><span class="route-desc">Inventory management — raw materials & supplies</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/employees</span><span class="route-desc">Staff management — workers + payment logging</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/financials</span><span class="route-desc">Financial reports — charts + PDF export</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/settings</span><span class="route-desc">Restaurant settings — theme, language, printers</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/qr</span><span class="route-desc">QR code generator for all tables</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/profile</span><span class="route-desc">User profile — edit username/password/avatar</span></div>
+      <div class="route-item"><span class="route-path">/admin/dashboard/users</span><span class="route-desc">User management (Admin only) — manage staff accounts</span></div>
+      <div class="route-item"><span class="route-path">/Takeaway</span><span class="route-desc">Customer-facing landing — restaurant hero + order CTA</span></div>
+      <div class="route-item"><span class="route-path">/menu?table=X&type=Y</span><span class="route-desc">Customer menu — category filter + cart + order placement</span></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:14px;">🔌 API Endpoints (Next.js Route Handlers)</h3>
+
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/orders</span><span class="route-desc">List all orders with items, sorted by newest</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/orders</span><span class="route-desc">Create a new order (from customer or admin)</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/orders/[id]</span><span class="route-desc">Update order: status, item quantity, add/remove items</span></div>
+      <div class="route-item"><span class="route-method method-delete">DELETE</span><span class="route-path">/api/orders/[id]</span><span class="route-desc">Delete an order</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/menu</span><span class="route-desc">Fetch all menu items</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/menu</span><span class="route-desc">Create a new menu item</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/menu/[id]</span><span class="route-desc">Update menu item (price, stock, image, etc.)</span></div>
+      <div class="route-item"><span class="route-method method-delete">DELETE</span><span class="route-path">/api/menu/[id]</span><span class="route-desc">Delete menu item</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/settings</span><span class="route-desc">Fetch restaurant settings (public — used by customer menu too)</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/settings</span><span class="route-desc">Save restaurant settings</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/stock</span><span class="route-desc">List all stock items</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/stock</span><span class="route-desc">Add new stock item</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/stock/[id]</span><span class="route-desc">Update stock item quantity/details</span></div>
+      <div class="route-item"><span class="route-method method-delete">DELETE</span><span class="route-path">/api/stock/[id]</span><span class="route-desc">Delete stock item</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/employees</span><span class="route-desc">List all workers with their payment history</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/employees</span><span class="route-desc">Create worker or log payment (action param)</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/transactions</span><span class="route-desc">List all financial transactions</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/transactions</span><span class="route-desc">Log income or expense transaction</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/reports/stats</span><span class="route-desc">Financial stats: revenue, expenses, profit — filtered by range</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/reports/worker-payments</span><span class="route-desc">Worker payroll data for financial report</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/printers</span><span class="route-desc">List all registered printers</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/printers</span><span class="route-desc">Register a printer (kitchen or payment)</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/printers/[id]</span><span class="route-desc">Update printer (set default, USB label, IP)</span></div>
+      <div class="route-item"><span class="route-method method-delete">DELETE</span><span class="route-path">/api/printers/[id]</span><span class="route-desc">Remove printer</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/auth/login</span><span class="route-desc">Login — returns httpOnly JWT cookie</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/auth/logout</span><span class="route-desc">Clear auth cookie</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/register</span><span class="route-desc">Create new user account</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/users/me</span><span class="route-desc">Get current authenticated user profile</span></div>
+      <div class="route-item"><span class="route-method method-get">GET</span><span class="route-path">/api/users</span><span class="route-desc">List all users (admin only)</span></div>
+      <div class="route-item"><span class="route-method method-patch">PATCH</span><span class="route-path">/api/users/[id]</span><span class="route-desc">Update user profile, change password, set role</span></div>
+      <div class="route-item"><span class="route-method method-post">POST</span><span class="route-path">/api/login/google</span><span class="route-desc">Google OAuth token verification + login/register</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 6. ARCHITECTURE ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <div>
+        <div class="section-title">Architecture & Data Flow</div>
+        <div class="section-desc">How the system components interact</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 Order Lifecycle</h3>
+      <div class="flow">
+        <span class="flow-step">Customer scans QR</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Browses /menu</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Adds to cart</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">POST /api/orders</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">DB creates Order</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Admin dashboard polls</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Staff prints kitchen ticket</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Status → Preparing → Ready → Completed</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔐 Authentication Flow</h3>
+      <div class="flow">
+        <span class="flow-step">User submits credentials</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">POST /api/auth/login</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Verify password (bcrypt) or Google ID token</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Sign JWT (jsonwebtoken)</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Set httpOnly cookie</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Next.js middleware validates cookie on every request</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 Financial Calculation Flow</h3>
+      <div class="flow">
+        <span class="flow-step">GET /api/reports/stats?range=month</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Prisma aggregates Orders (completed) + FinTransactions</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Revenue = order totals + income transactions</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Expenses = expense transactions + worker payments</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">Profit = Revenue − Expenses</span>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🗄️ Database Layer</h3>
+        <p>Prisma ORM generates a type-safe client from <code>schema.prisma</code>. A singleton client is exported from <code>lib/db.ts</code> to prevent connection pool exhaustion in Next.js dev mode. All tables live in one Neon PostgreSQL instance.</p>
+      </div>
+      <div class="card">
+        <h3>🌍 State Management</h3>
+        <p>Zustand store (<code>lib/store.ts</code>) holds client-side state: currency symbol, active language, restaurant name/logo, theme preference, dark mode, current user session, and live order notifications.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 7. I18N ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <div>
+        <div class="section-title">Internationalization (i18n)</div>
+        <div class="section-desc">Multi-language support system</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌐 3-Language Support</h3>
+      <p>The app supports <strong>English</strong>, <strong>French</strong>, and <strong>Arabic</strong> (with full RTL layout switching). All UI text is defined in <code>lib/i18n.ts</code> — a large translation dictionary with a <code>t(key, language)</code> helper function. The language preference is stored in <code>RestaurantSettings</code> in the database and loaded on every page. Arabic triggers <code>dir="rtl"</code> on the root element automatically using the <code>isRTL(language)</code> utility.</p>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card">
+        <h3>🇬🇧 English</h3>
+        <p>Default language. Full coverage across all admin pages, order management, settings, and customer-facing menu.</p>
+      </div>
+      <div class="card">
+        <h3>🇫🇷 French</h3>
+        <p>Complete French translation including financial terminology (Chiffre d'Affaire, commandes, etc.).</p>
+      </div>
+      <div class="card">
+        <h3>🇸🇦 Arabic (RTL)</h3>
+        <p>Full Arabic translation with automatic right-to-left layout reversal applied to the entire interface.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 8. THEMING ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <div>
+        <div class="section-title">Theming & Visual Design</div>
+        <div class="section-desc">Color themes, dark mode, and design system</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 8 Built-in Color Themes</h3>
+      <p style="margin-bottom:12px;">Themes are applied via a <code>data-theme</code> attribute on the <code>&lt;html&gt;</code> element. TailwindCSS CSS variables for <code>--primary</code>, <code>--accent</code> etc. change per theme.</p>
+      <div>
+        <span class="tag" style="background:#fff7ed;color:#f97316;border-color:#fed7aa;">🔥 Ember (Orange)</span>
+        <span class="tag" style="background:#eff6ff;color:#2563eb;border-color:#bfdbfe;">💎 Sapphire (Blue)</span>
+        <span class="tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0;">🌿 Forest (Green)</span>
+        <span class="tag" style="background:#fff1f2;color:#e11d48;border-color:#fda4af;">💎 Ruby (Red)</span>
+        <span class="tag" style="background:#faf5ff;color:#7c3aed;border-color:#ddd6fe;">🌌 Cosmic (Purple)</span>
+        <span class="tag" style="background:#fce7f3;color:#db2777;border-color:#f9a8d4;">🌹 Rose Gold</span>
+        <span class="tag" style="background:#f1f5f9;color:#475569;border-color:#e2e8f0;">🌙 Midnight (Slate)</span>
+        <span class="tag" style="background:#fff8f0;color:#9c6d40;border-color:#e8d5bd;">📜 Parchment (Cream)</span>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌑 Dark Mode</h3>
+        <p>Full dark/light toggle available in the Topbar. Preference stored in <code>localStorage</code> and persisted across page reloads. Applied via <code>.dark</code> class on the <code>&lt;html&gt;</code> element.</p>
+      </div>
+      <div class="card">
+        <h3>✨ Glassmorphism</h3>
+        <p>The <code>.glass</code> CSS class applies <code>backdrop-blur + semi-transparent background</code> for premium frosted-glass effects used on modals, the Takeaway landing page, and overlays.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 9. PRINTING ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">9</div>
+      <div>
+        <div class="section-title">Thermal Printing System</div>
+        <div class="section-desc">Kitchen and payment ticket printing via browser</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🍳 Kitchen Ticket</h3>
+        <p>Prints items + quantities + notes in large monospace font optimized for 80mm thermal paper. Includes order number and table/takeaway designation. Items are ALL CAPS for visibility. Auto-moves status to "Preparing" when printed.</p>
+      </div>
+      <div class="card">
+        <h3>🧾 Payment Receipt</h3>
+        <p>Formal receipt with restaurant logo, name, order number, itemized list with quantities and subtotals, and total due. Formatted for 80mm thermal paper. Uses <code>@page { size: 80mm auto; }</code> CSS.</p>
+      </div>
+    </div>
+
+    <div class="highlight-blue">
+      <strong>How it works:</strong> The print area is a hidden <code>#print-area div</code> rendered in the DOM. When the admin clicks "Print Kitchen" or "Print Payment", the CSS switches all body elements to <code>visibility: hidden</code> except <code>#print-area</code>, then calls <code>window.print()</code>. The browser print dialog shows a perfectly formatted 80mm ticket.
+    </div>
+
+    <div class="card">
+      <h3>🖨️ Printer Registration (WebUSB)</h3>
+      <p>Printers are registered in the <code>Printer</code> database table with their type (kitchen/payment), IP address (for network printers), or USB label (detected via the browser's <code>navigator.usb.requestDevice()</code> API). The WebUSB API allows direct USB printer detection from the browser without drivers.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 10. DEPLOYMENT ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">10</div>
+      <div>
+        <div class="section-title">Deployment & Infrastructure</div>
+        <div class="section-desc">Current MVP hosting configuration</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Component</th><th>Provider</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Frontend + API</strong></td><td>Render.com / Vercel</td><td>Next.js app deployed as Node.js server (npm run build → npm start)</td></tr>
+        <tr><td><strong>Database</strong></td><td>Neon.tech</td><td>Serverless PostgreSQL, free tier (512MB), eu-central-1</td></tr>
+        <tr><td><strong>Domain</strong></td><td>Daily Dose.youcefben.com</td><td>Custom domain with HTTPS</td></tr>
+        <tr><td><strong>Email (SMTP)</strong></td><td>mail.youcefben.com</td><td>Daily Dose@youcefben.com via custom mail server</td></tr>
+        <tr><td><strong>Google OAuth</strong></td><td>Google Cloud Console</td><td>OAuth 2.0 client for social login</td></tr>
+        <tr><td><strong>Images</strong></td><td>Database (base64)</td><td>Logos and menu images stored as base64 strings in PostgreSQL (to be migrated to GCS)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card">
+      <h3>🔑 Environment Variables</h3>
+      <p>
+        <span class="tag tag-slate">DATABASE_URL</span>
+        <span class="tag tag-slate">JWT_SECRET</span>
+        <span class="tag tag-slate">NEXT_PUBLIC_APP_URL</span>
+        <span class="tag tag-slate">SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASS</span>
+        <span class="tag tag-slate">GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET</span>
+        <span class="tag tag-slate">NEXT_PUBLIC_GOOGLE_CLIENT_ID</span>
+        <span class="tag tag-slate">SUPERADMIN_EMAIL / SUPERADMIN_PASSWORD</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ 11. LIMITATIONS ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">11</div>
+      <div>
+        <div class="section-title">MVP Limitations & Planned SaaS Upgrades</div>
+        <div class="section-desc">Known constraints that will be resolved in the SaaS version</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Limitation</th><th>Current MVP Approach</th><th>SaaS Solution</th></tr></thead>
+      <tbody>
+        <tr><td>Single restaurant only</td><td>All data in one shared database</td><td>Multi-tenant with tenantId + RLS on Cloud SQL</td></tr>
+        <tr><td>Image storage in DB</td><td>base64 strings in PostgreSQL (500KB limit)</td><td>Google Cloud Storage with signed URLs</td></tr>
+        <tr><td>No real-time push</td><td>Polling every 3 seconds with setInterval</td><td>WebSockets or Server-Sent Events</td></tr>
+        <tr><td>No subscription billing</td><td>Free access, no payment gates</td><td>Stripe subscription plans</td></tr>
+        <tr><td>Custom JWT auth</td><td>Manual JWT signing/verification</td><td>Firebase Authentication (Google, email/password)</td></tr>
+        <tr><td>No CI/CD pipeline</td><td>Manual deploy to Render/Vercel</td><td>GitHub Actions → Cloud Run auto-deploy</td></tr>
+        <tr><td>No monitoring</td><td>Console logs only</td><td>Cloud Monitoring + Sentry error tracking</td></tr>
+        <tr><td>Subdomain routing</td><td>Single domain, no tenant URLs</td><td>*.Daily Dose.youcefben.com via Cloudflare wildcard</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ FOOTER ══════════════════════════════════════════ -->
+  <div style="text-align:center;padding:40px 0 20px;border-top:2px solid var(--border);color:var(--muted);font-size:12px;">
+    <p style="font-size:22px;font-weight:900;color:var(--primary);margin-bottom:4px;">Daily Dose Restaurant OS</p>
+    <p>MVP Technical Documentation · April 2026 · Prepared by Youcef Benabderahmane</p>
+    <p style="margin-top:8px;">Next step: <strong>SaaS Transformation → github.com/YoucefBenabderahmane/Saas-Daily Dose</strong></p>
+    <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+      <span class="tag tag-orange">Next.js 16</span>
+      <span class="tag tag-blue">TypeScript</span>
+      <span class="tag tag-green">Prisma ORM</span>
+      <span class="tag tag-blue">PostgreSQL</span>
+      <span class="tag tag-purple">Zustand</span>
+      <span class="tag tag-orange">TailwindCSS</span>
+      <span class="tag tag-slate">Framer Motion</span>
+      <span class="tag tag-green">Recharts</span>
+      <span class="tag tag-orange">jsPDF</span>
+      <span class="tag tag-blue">WebUSB API</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;padding:20px 0 40px;">
+  <button onclick="window.print()" style="background:#f97316;color:white;border:none;padding:14px 36px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;box-shadow:0 4px 20px rgba(249,115,22,0.35);">
+    🖨️ Print / Save as PDF
+  </button>
+  <p style="font-size:12px;color:#64748b;margin-top:10px;font-family:Inter,sans-serif;">Use your browser's Print dialog → Save as PDF</p>
+</div>
+</body>
+</html>

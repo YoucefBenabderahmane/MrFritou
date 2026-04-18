@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: restaurant-os
+    env: node
+    buildCommand: npm install && npx prisma generate && npx prisma db push && npm run build
+    startCommand: npm start
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: "file:/data/dev.db"

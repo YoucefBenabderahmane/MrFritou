@@ -1,0 +1,446 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BASE ROOT — Orange (default)
+   ============================================================ */
+:root {
+  --background: #fafaf9;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 60% at 70% -10%, #ffedd5 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 90%, #fed7aa22 0%, transparent 60%),
+    #fafaf9;
+  --foreground: #1c1917;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-foreground: #1c1917;
+  --primary: #f97316;
+  --primary-foreground: #ffffff;
+  --secondary: #fff7ed;
+  --secondary-foreground: #1c1917;
+  --muted: #f5f5f4;
+  --muted-foreground: #78716c;
+  --accent: #ffedd5;
+  --accent-foreground: #c2410c;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(249, 115, 22, 0.18);
+  --input: #e7e5e4;
+  --ring: #f97316;
+  --radius: 1rem;
+}
+
+/* Dark — Orange */
+.dark {
+  --background: #0d0a08;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 80% 0%, rgba(234, 88, 12, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(234, 88, 12, 0.08) 0%, transparent 50%),
+    #0d0a08;
+  --foreground: #f5f5f4;
+  --card: rgba(30, 24, 18, 0.75);
+  --card-foreground: #f5f5f4;
+  --primary: #fb923c;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(234, 88, 12, 0.12);
+  --secondary-foreground: #f5f5f4;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --accent: #431407;
+  --accent-foreground: #ffedd5;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(234, 88, 12, 0.22);
+  --input: #292524;
+  --ring: #fb923c;
+}
+
+/* ============================================================
+   CREAM — Warm Parchment
+   ============================================================ */
+:root[data-theme="cream"] {
+  --background: #f2ebe0;
+  --bg-gradient:
+    radial-gradient(ellipse 100% 60% at 50% -20%, #fff8f0 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, #e8d5bd33 0%, transparent 60%),
+    #f2ebe0;
+  --foreground: #3b2f20;
+  --card: rgba(255, 251, 245, 0.92);
+  --card-foreground: #3b2f20;
+  --primary: #9c6d40;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(220, 200, 175, 0.45);
+  --secondary-foreground: #3b2f20;
+  --muted: #e8ddd0;
+  --muted-foreground: #7a6551;
+  --accent: #e8d5bd;
+  --accent-foreground: #7c4f1e;
+  --border: rgba(156, 109, 64, 0.2);
+  --input: #e0d5c6;
+  --ring: #9c6d40;
+}
+.dark[data-theme="cream"] {
+  --background: #15100b;
+  --bg-gradient:
+    radial-gradient(ellipse 70% 50% at 60% 0%, rgba(156, 109, 64, 0.2) 0%, transparent 60%),
+    #15100b;
+  --foreground: #f0e8dc;
+  --card: rgba(38, 28, 18, 0.8);
+  --card-foreground: #f0e8dc;
+  --primary: #d4a574;
+  --primary-foreground: #15100b;
+  --secondary: rgba(156, 109, 64, 0.15);
+  --secondary-foreground: #f0e8dc;
+  --muted: #2e221a;
+  --muted-foreground: #a8957e;
+  --accent: #3d2b1a;
+  --accent-foreground: #f0e8dc;
+  --border: rgba(212, 165, 116, 0.2);
+  --input: #2e221a;
+  --ring: #d4a574;
+}
+
+/* ============================================================
+   OCEAN BLUE — Deep Indigo + Sapphire
+   ============================================================ */
+:root[data-theme="blue"] {
+  --background: #f0f4ff;
+  --bg-gradient:
+    radial-gradient(ellipse 90% 60% at 80% -10%, #c7d7ff 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at -10% 80%, #bfdbfe44 0%, transparent 55%),
+    #f0f4ff;
+  --foreground: #0d1b3e;
+  --card: rgba(255, 255, 255, 0.90);
+  --card-foreground: #0d1b3e;
+  --primary: #3b5bdb;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(59, 91, 219, 0.09);
+  --secondary-foreground: #0d1b3e;
+  --muted: #e8edf8;
+  --muted-foreground: #4a5a80;
+  --accent: #dbeafe;
+  --accent-foreground: #1e3a8a;
+  --border: rgba(59, 91, 219, 0.18);
+  --input: #dde3f5;
+  --ring: #3b5bdb;
+}
+.dark[data-theme="blue"] {
+  --background: #060c1f;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 90% 0%, rgba(59, 91, 219, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(99, 102, 241, 0.12) 0%, transparent 55%),
+    #060c1f;
+  --foreground: #e8eeff;
+  --card: rgba(10, 18, 50, 0.8);
+  --card-foreground: #e8eeff;
+  --primary: #748ffc;
+  --primary-foreground: #060c1f;
+  --secondary: rgba(59, 91, 219, 0.14);
+  --secondary-foreground: #e8eeff;
+  --muted: #101b3a;
+  --muted-foreground: #8899cc;
+  --accent: #1a2a6e;
+  --accent-foreground: #e8eeff;
+  --border: rgba(116, 143, 252, 0.2);
+  --input: #101b3a;
+  --ring: #748ffc;
+}
+
+/* ============================================================
+   FOREST GREEN — Emerald Canopy
+   ============================================================ */
+:root[data-theme="green"] {
+  --background: #f0fdf6;
+  --bg-gradient:
+    radial-gradient(ellipse 90% 60% at 70% -10%, #bbf7d0 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at -5% 85%, #a7f3d033 0%, transparent 55%),
+    #f0fdf6;
+  --foreground: #052e16;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-foreground: #052e16;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(22, 163, 74, 0.09);
+  --secondary-foreground: #052e16;
+  --muted: #dcfce7;
+  --muted-foreground: #3d7a52;
+  --accent: #bbf7d0;
+  --accent-foreground: #14532d;
+  --border: rgba(22, 163, 74, 0.2);
+  --input: #d1fae5;
+  --ring: #16a34a;
+}
+.dark[data-theme="green"] {
+  --background: #030f07;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 80% 0%, rgba(22, 163, 74, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 0% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 55%),
+    #030f07;
+  --foreground: #e8fdf0;
+  --card: rgba(5, 24, 12, 0.8);
+  --card-foreground: #e8fdf0;
+  --primary: #34d399;
+  --primary-foreground: #030f07;
+  --secondary: rgba(22, 163, 74, 0.12);
+  --secondary-foreground: #e8fdf0;
+  --muted: #0c2614;
+  --muted-foreground: #6ee7b7;
+  --accent: #064e1e;
+  --accent-foreground: #e8fdf0;
+  --border: rgba(52, 211, 153, 0.2);
+  --input: #0c2614;
+  --ring: #34d399;
+}
+
+/* ============================================================
+   RUBY RED — Deep Crimson
+   ============================================================ */
+:root[data-theme="red"] {
+  --background: #fff5f5;
+  --bg-gradient:
+    radial-gradient(ellipse 90% 55% at 75% -10%, #fecdd3 0%, transparent 55%),
+    radial-gradient(ellipse 55% 35% at -5% 90%, #fee2e244 0%, transparent 55%),
+    #fff5f5;
+  --foreground: #3f0015;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-foreground: #3f0015;
+  --primary: #e11d48;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(225, 29, 72, 0.08);
+  --secondary-foreground: #3f0015;
+  --muted: #ffe4e6;
+  --muted-foreground: #7d3042;
+  --accent: #fecdd3;
+  --accent-foreground: #9f1239;
+  --border: rgba(225, 29, 72, 0.18);
+  --input: #fde8ea;
+  --ring: #e11d48;
+}
+.dark[data-theme="red"] {
+  --background: #0e0205;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 80% 0%, rgba(225, 29, 72, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 0% 100%, rgba(225, 29, 72, 0.08) 0%, transparent 55%),
+    #0e0205;
+  --foreground: #ffeef2;
+  --card: rgba(25, 4, 10, 0.8);
+  --card-foreground: #ffeef2;
+  --primary: #fb7185;
+  --primary-foreground: #0e0205;
+  --secondary: rgba(225, 29, 72, 0.14);
+  --secondary-foreground: #ffeef2;
+  --muted: #2a0814;
+  --muted-foreground: #f9a8b8;
+  --accent: #4c0e1b;
+  --accent-foreground: #ffeef2;
+  --border: rgba(251, 113, 133, 0.2);
+  --input: #2a0814;
+  --ring: #fb7185;
+}
+
+/* ============================================================
+   COSMIC PURPLE — Galactic Violet
+   ============================================================ */
+:root[data-theme="purple"] {
+  --background: #f8f4ff;
+  --bg-gradient:
+    radial-gradient(ellipse 90% 55% at 75% -10%, #ddd6fe 0%, transparent 55%),
+    radial-gradient(ellipse 55% 35% at -5% 90%, #e9d5ff33 0%, transparent 55%),
+    #f8f4ff;
+  --foreground: #1e0a3c;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-foreground: #1e0a3c;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(124, 58, 237, 0.09);
+  --secondary-foreground: #1e0a3c;
+  --muted: #ede9fe;
+  --muted-foreground: #5b3f8a;
+  --accent: #ddd6fe;
+  --accent-foreground: #4c1d95;
+  --border: rgba(124, 58, 237, 0.18);
+  --input: #e6e0f8;
+  --ring: #7c3aed;
+}
+.dark[data-theme="purple"] {
+  --background: #08031a;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 85% 0%, rgba(124, 58, 237, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(167, 139, 250, 0.1) 0%, transparent 55%),
+    #08031a;
+  --foreground: #f0ebff;
+  --card: rgba(14, 6, 38, 0.82);
+  --card-foreground: #f0ebff;
+  --primary: #a78bfa;
+  --primary-foreground: #08031a;
+  --secondary: rgba(124, 58, 237, 0.14);
+  --secondary-foreground: #f0ebff;
+  --muted: #160a36;
+  --muted-foreground: #c4b5fd;
+  --accent: #2e1065;
+  --accent-foreground: #f0ebff;
+  --border: rgba(167, 139, 250, 0.22);
+  --input: #160a36;
+  --ring: #a78bfa;
+}
+
+/* ============================================================
+   ROSE GOLD — Blush & Champagne
+   ============================================================ */
+:root[data-theme="rose"] {
+  --background: #fff5f7;
+  --bg-gradient:
+    radial-gradient(ellipse 90% 55% at 70% -10%, #ffdde1 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at -5% 85%, #fce7f333 0%, transparent 55%),
+    #fff5f7;
+  --foreground: #3d0a1e;
+  --card: rgba(255, 255, 255, 0.92);
+  --card-foreground: #3d0a1e;
+  --primary: #db2777;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(219, 39, 119, 0.09);
+  --secondary-foreground: #3d0a1e;
+  --muted: #fce7f3;
+  --muted-foreground: #7a2d52;
+  --accent: #fbcfe8;
+  --accent-foreground: #9d174d;
+  --border: rgba(219, 39, 119, 0.18);
+  --input: #fde4ef;
+  --ring: #db2777;
+}
+.dark[data-theme="rose"] {
+  --background: #0f0208;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 80% 0%, rgba(219, 39, 119, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 35% at 0% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 55%),
+    #0f0208;
+  --foreground: #ffe8f3;
+  --card: rgba(26, 4, 14, 0.82);
+  --card-foreground: #ffe8f3;
+  --primary: #f472b6;
+  --primary-foreground: #0f0208;
+  --secondary: rgba(219, 39, 119, 0.14);
+  --secondary-foreground: #ffe8f3;
+  --muted: #2a061a;
+  --muted-foreground: #f9a8d4;
+  --accent: #500926;
+  --accent-foreground: #ffe8f3;
+  --border: rgba(244, 114, 182, 0.22);
+  --input: #2a061a;
+  --ring: #f472b6;
+}
+
+/* ============================================================
+   MIDNIGHT SLATE — Professional Dark
+   ============================================================ */
+:root[data-theme="slate"] {
+  --background: #f7f8fa;
+  --bg-gradient:
+    radial-gradient(ellipse 100% 60% at 60% -15%, #e2e8f0 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at -5% 95%, #cbd5e133 0%, transparent 55%),
+    #f7f8fa;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.96);
+  --card-foreground: #0f172a;
+  --primary: #475569;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(71, 85, 105, 0.09);
+  --secondary-foreground: #0f172a;
+  --muted: #e8edf5;
+  --muted-foreground: #4a5568;
+  --accent: #e2e8f0;
+  --accent-foreground: #1e293b;
+  --border: rgba(71, 85, 105, 0.2);
+  --input: #dde3ee;
+  --ring: #475569;
+}
+.dark[data-theme="slate"] {
+  --background: #030712;
+  --bg-gradient:
+    radial-gradient(ellipse 80% 50% at 80% 0%, rgba(71, 85, 105, 0.22) 0%, transparent 60%),
+    #030712;
+  --foreground: #f1f5f9;
+  --card: rgba(10, 15, 30, 0.85);
+  --card-foreground: #f1f5f9;
+  --primary: #94a3b8;
+  --primary-foreground: #030712;
+  --secondary: rgba(71, 85, 105, 0.18);
+  --secondary-foreground: #f1f5f9;
+  --muted: #0f1729;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+  --border: rgba(148, 163, 184, 0.18);
+  --input: #0f1729;
+  --ring: #94a3b8;
+}
+
+/* ============================================================
+   TAILWIND THEME MAPPING
+   ============================================================ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-xl: var(--radius);
+}
+
+/* ============================================================
+   BODY
+   ============================================================ */
+body {
+  background-color: var(--background);
+  background-image: var(--bg-gradient, none);
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--foreground);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   GLASSMORPHISM
+   ============================================================ */
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+  background: rgba(15, 10, 5, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dark[data-theme="blue"] .glass,
+.dark[data-theme="purple"] .glass,
+.dark[data-theme="slate"] .glass {
+  background: rgba(5, 8, 30, 0.6);
+}
+
+/* ============================================================
+   SCROLLBAR HIDE UTILITY
+   ============================================================ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

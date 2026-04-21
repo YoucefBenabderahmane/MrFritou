@@ -77,6 +77,14 @@ export default function StockPage() {
     setIsCategoryModalOpen(false);
   };
 
+  const handleRemoveCategory = (categoryToRemove: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm(`Are you sure you want to remove the "${categoryToRemove}" category?`)) {
+      setCategories(categories.filter(c => c !== categoryToRemove));
+      if (activeTab === categoryToRemove) setActiveTab("All");
+    }
+  };
+
   const handleLogTransaction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -194,18 +202,27 @@ export default function StockPage() {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-card p-4 rounded-2xl border border-border shadow-sm w-full">
         <div className="flex overflow-x-auto w-full md:w-auto gap-2 pb-2 md:pb-0 no-scrollbar">
           {categories.map(category => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={cn(
-                "px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors",
-                activeTab === category 
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
-                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+            <div key={category} className="relative group/cat shrink-0 mt-1.5 mr-1.5">
+              <button
+                onClick={() => setActiveTab(category)}
+                className={cn(
+                  "px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors",
+                  activeTab === category 
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
+                    : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                )}
+              >
+                {category}
+              </button>
+              {category !== "All" && (
+                <button
+                  onClick={(e) => handleRemoveCategory(category, e)}
+                  className="absolute -top-1.5 -right-1.5 p-0.5 bg-destructive text-destructive-foreground rounded-full opacity-0 scale-50 group-hover/cat:opacity-100 group-hover/cat:scale-100 transition-all hover:bg-red-600 shadow-sm"
+                >
+                  <X className="w-3 h-3" />
+                </button>
               )}
-            >
-              {category}
-            </button>
+            </div>
           ))}
         </div>
         

@@ -42,6 +42,30 @@ export default function QrCodesPage() {
     window.print();
   };
 
+  const handleDownloadSingle = (tableId: string, label: string) => {
+    const svg = document.getElementById(`qr-${tableId}`);
+    if (!svg) return;
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      if (ctx) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        const pngFile = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.download = `QR-${label.replace(/\s+/g, '-')}.png`;
+        downloadLink.href = `${pngFile}`;
+        downloadLink.click();
+      }
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -89,6 +113,7 @@ export default function QrCodesPage() {
               
               <div className="bg-white p-3 rounded-xl mb-4 shadow-sm border border-border/50 print:border-none print:shadow-none">
                 <QRCodeSVG
+                  id={`qr-${table.id}`}
                   value={`${baseUrl}/menu?table=${table.id}`}
                   size={140}
                   bgColor={"#ffffff"}
@@ -103,7 +128,10 @@ export default function QrCodesPage() {
               </p>
 
               <div className="flex gap-2 w-full mt-auto print:hidden">
-                <button className="flex-1 flex items-center justify-center gap-1 py-2 bg-secondary text-foreground hover:bg-secondary/70 rounded-lg text-sm font-medium transition-colors">
+                <button 
+                  onClick={() => handleDownloadSingle(table.id, table.label)}
+                  className="flex-1 flex items-center justify-center gap-1 py-2 bg-secondary text-foreground hover:bg-secondary/70 rounded-lg text-sm font-medium transition-colors"
+                >
                   <Download className="w-4 h-4" /> {t("qr.download", language)}
                 </button>
               </div>

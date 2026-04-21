@@ -213,7 +213,7 @@ export default function OrderManagementPage() {
   };
 
   // Status mapping
-  const statuses = ["pending", "preparing", "ready", "completed", "cancelled"];
+  const statuses = ["pending", "preparing", "completed", "cancelled"];
 
   return (
     <>
@@ -255,10 +255,6 @@ export default function OrderManagementPage() {
           </div>
           
           <div className="flex gap-2 w-full md:w-auto">
-            <button className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground text-sm font-semibold rounded-xl hover:bg-secondary/70 transition-colors">
-              <Filter className="w-4 h-4" />
-              {t("orders.moreFilters", language)}
-            </button>
             <div className="relative flex-1 md:w-64 group">
               <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none text-muted-foreground">
                 <Search className="w-4 h-4" />

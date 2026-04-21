@@ -46,6 +46,13 @@ export async function GET(req: Request) {
       }
     });
 
+    // 3. Fetch Worker Payments
+    const workerPayments = await db.workerPayment.findMany({
+      where: {
+        date: { gte: start, lte: end }
+      }
+    });
+
     // Calculate Totals
     let revenueFromOrders = 0;
     orders.forEach(order => {
@@ -65,7 +72,11 @@ export async function GET(req: Request) {
       }
     });
 
-    const totalRevenue = revenueFromOrders + otherIncome;
+    workerPayments.forEach(wp => {
+      totalExpenses += wp.amount;
+    });
+
+    const totalRevenue = revenueFromOrders; 
     const pureProfit = totalRevenue - totalExpenses;
 
     // Generate Chart Data
@@ -90,8 +101,14 @@ export async function GET(req: Request) {
 
         transactions.forEach(t => {
           if (isSameDay(new Date(t.date), day)) {
-            if (t.type === "income") rev += t.amount;
-            else if (t.type === "expense") exp += t.amount;
+            if (t.type === "expense") exp += t.amount;
+            // Income is excluded from revenue per the new formula rules
+          }
+        });
+
+        workerPayments.forEach(wp => {
+          if (isSameDay(new Date(wp.date), day)) {
+            exp += wp.amount;
           }
         });
 
@@ -116,8 +133,14 @@ export async function GET(req: Request) {
 
         transactions.forEach(t => {
           if (isSameMonth(new Date(t.date), m)) {
-            if (t.type === "income") rev += t.amount;
-            else if (t.type === "expense") exp += t.amount;
+            if (t.type === "expense") exp += t.amount;
+            // Income is excluded from revenue
+          }
+        });
+
+        workerPayments.forEach(wp => {
+          if (isSameMonth(new Date(wp.date), m)) {
+            exp += wp.amount;
           }
         });
 

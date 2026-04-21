@@ -54,7 +54,7 @@ export async function POST(req: Request) {
         orderNum: generatedOrderNum,
         table,
         type,
-        status,
+        status: status || "pending",
         customerName,
         customerPhone,
         items: {
